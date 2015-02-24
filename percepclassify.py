@@ -1,3 +1,22 @@
+import sys
+import json
+files=sys.argv
+sys.stdin = codecs.getreader('latin-1')
+
+
+def loadmodell():
+    f=open(str(files[1]),'r',encoding='latin-1')
+    weightavg=json.loads(f.read())
+    return weightavg
+
+def classify(classlist):
+    for eachline in sys.stdin.readlines():
+        wordss=eachline.split()
+        line='%%%BEGIN%%%'+' '
+        for word in wordss:
+            line+=word.rsplit('/',1)[0]+' '
+        line+='%%%END%%%'
+        percepclassify(line,classlist,weightavg)
 
 def percepclassify(line,classlist,weightavg):
     output=''
@@ -25,5 +44,16 @@ def percepclassify(line,classlist,weightavg):
                 maximum=eachclass
         output+=words[index]+'/'+maximum+' '
     print(output)
+    
+    
+weightavg=loadmodell()
+classlist=[]
+for key in weightavg:
+    classlist.append(key)
+classify(classlist)
+    
+
+
+
     
     

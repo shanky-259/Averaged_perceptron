@@ -1,69 +1,65 @@
 import sys
 import json
-import random
 files=sys.argv
-'''postagnew also checks the accuracy of the entire document TESTPOSFILE by checking the correctness of each word
-which is not done in postag.py  but uses prev curr and next words as features not done in postagfull'''
-class neclassify:
-    def __init__(self):
-        pass
+import codecs
+sys.stdin = codecs.getreader('latin-1')(sys.stdin.detach())
+
     
-    def loadmodell(self):
-        f=open(str(files[1]),'r')
-        weightavg=json.loads(f.read())
-        return weightavg
-    
-    def classifyex(self):
-        k=0
-        total=0
-        for lines in open(files[2],'r'):
-            wordss=lines.split()
-            line='%%%BEGIN%%%'+' '
-            for word in wordss:
-                line+=word.rsplit('/',1)[1]+' '
-                line+=word.rsplit('/',1)[0]+' '
-            line+='%%%END%%%'
-            words=line.split()
-            for eachword in words:
-                if word not in ('%%%BEGIN%%%','%%%END%%%'):
-                    total+=1
-            for index in range(2,len(words)-1,2):
-                wprev='w_prev'+words[index-2]
-                wcurr='w_curr'+words[index]
+def loadmodell():
+    f=open(str(files[1]),'r')
+    weightavg=json.loads(f.read())
+    return weightavg
+
+def classify(classlist):
+    for eachline in sys.stdin.readlines():
+        wordss=eachline.split()
+        line='%%%BEGIN%%%'+' '
+        for word in wordss:
+            line+=word.rsplit('/',1)[0]+' '
+        line+='%%%END%%%'
+        percepclassify(line,classlist,weightavg)
+        
+def percepclassify(line,classlist,weightavg):
+    output=''
+    words=line.split()
+    maximum='%%not_defined%%'
+    for index in range(1,len(words)-1):
+        try:
+            posp=words[index-1].rsplit('/',1)[1]
+        except:
+            posp=''
+        posc=words[index].rsplit('/',1)[1]
+        try:
+            posn=words[index+1].rsplit('/',1)[1]
+        except:
+            posn=''
+        wprev='w_prev'+words[index-1].rsplit('/',1)[0]
+        wcurr='w_curr'+words[index].rsplit('/',1)[0]
+        wnext='w_next'+words[index+1].rsplit('/',1)[0]
+        prev_entity=maximum
+        classifydev={}
+        feature={}
+        context=[wprev,wcurr,wnext,posp,posc,posn,prev_entity]
+        for eachword in context:
+            feature[eachword]=1
+        for eachclass in classlist:
+            classifydev[eachclass]=0
+        for eachclass in classlist:
+            for eachword in context:
                 try:
-                    wnext='w_next'+words[index+2]
+                    classifydev[eachclass]+=feature[eachword]*weightavg[eachclass][eachword]
                 except:
-                    wnext='w_next'+words[index+1]
-                actualclass=words[index-1]
-                classifydev={}
-                feature={}
-                for i in range(len(classlist)):
-                    feature[classlist[i]]={}
-                relative=[wprev,wcurr,wnext]
-                for eachword in relative:
-                    for i in range(len(classlist)):
-                        feature[classlist[i]][eachword]=1
-                '''for each word sum up the dot product of feature and weighted avg,result will be the class with max value'''
-                for eachclass in classlist:
-                    classifydev[eachclass]=0
-                for eachclass in classlist:
-                    for eachword in relative:
-                        try:
-                            classifydev[eachclass]+=feature[eachclass][eachword]*weightavg[eachclass][eachword]
-                        except:
-                            classifydev[eachclass]+=0
-                maximum=classlist[0]
-                for eachclass in classlist:
-                    if classifydev[eachclass]>classifydev[maximum]:
-                        maximum=eachclass
-                if maximum!=actualclass:
-                    k+=1
-        print("the total accuracy is : %s"%(1-(k/total)))
+                    classifydev[eachclass]+=0
+        maximum=classlist[0]
+        for eachclass in classlist:
+            if classifydev[eachclass]>classifydev[maximum]:
+                maximum=eachclass
+        output+=words[index]+'/'+maximum+' '
+    print(output)
             
-if __name__ == '__main__':
-    s=neclassify()
-    weightavg=s.loadmodell()
-    classlist=[]
-    for key in weightavg:
-        classlist.append(key)
-    s.classifyex()
+
+weightavg=loadmodell()
+classlist=[]
+for key in weightavg:
+    classlist.append(key)
+classify(classlist)

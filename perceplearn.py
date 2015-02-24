@@ -32,7 +32,7 @@ def train(classlist_passed,lines):
     for eachclass in classlist:
         weight[eachclass]={}
         weightavg[eachclass]={}
-    for a in range(N):
+    for x in range(N):
         for line in random.sample(lines,len(lines)):
             words=line.split()
             for index in range(2,len(words)-1,2):
@@ -62,6 +62,26 @@ def train(classlist_passed,lines):
         f1=open(str(files[2]),"w+")
         encode=json.dumps(weightavg)
         f1.write(encode)
-        f1.close()          
+        f1.close()
+
+def build():
+    lines=[]
+    classes=set()
+    allwordset=set()
+    d={}
+    for line in open(files[1],'r',encoding='latin-1'):
+        wordlist=line.split()
+        sentence='%%%BEGIN%%%'+' '
+        for word in wordlist:
+            sentence+=word.split('/')[1]+' '
+            sentence+=word.split('/')[0]+' '
+            classes.add(word.split('/')[1])
+        sentence+='%%%END%%%'
+        lines.append(sentence)
+    classlist=list(classes)
+    train(classlist,lines)
+    
+build()
+
                     
     
