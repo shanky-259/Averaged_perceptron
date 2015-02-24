@@ -1,7 +1,7 @@
 import sys
 import json
 files=sys.argv
-sys.stdin = codecs.getreader('latin-1')
+sys.stdin = codecs.getreader('latin-1')(sys.stdin.detach())
 
 
 def loadmodell():
