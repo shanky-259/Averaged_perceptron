@@ -6,7 +6,7 @@ sys.stdin = codecs.getreader('latin-1')(sys.stdin.detach())
 
     
 def loadmodell():
-    f=open(str(files[1]),'r')
+    f=open(str(files[1]),'r',encoding='latin-1')
     weightavg=json.loads(f.read())
     return weightavg
 

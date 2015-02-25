@@ -8,7 +8,6 @@ def build():
     lines=[]
     classes=set()
     allwordset=set()
-    d={}
     for line in open(files[1],'r',encoding='latin-1'):
         wordlist=line.split()
         sentence='%%%BEGIN%%%'+' '
@@ -94,10 +93,10 @@ def train(classlist_passed,lines):
                 except:
                     weightavg[eachclass][word]=weight[eachclass][word]
         
-        f1=open(str(files[2]),"w+")
-        encode=json.dumps(weightavg)
-        f1.write(encode)
-        f1.close()
+    f1=open(str(files[2]),"w+")
+    encode=json.dumps(weightavg)
+    f1.write(encode)
+    f1.close()
 
 
 build()                
