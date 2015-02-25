@@ -2,10 +2,7 @@ Instructions for running the code :
 	python3 perceplearn.py [trainingfile] [modelfile]
 	python3 percepclassify [modelfile] < [testfile] > [outputfile]
 
-NOTE : My implementation of postrain.py and postag.py uses same formatting of trainingfile 
-       as perceplearn.py and percepclassify.py , i.e. perceplearn.py and percepclassify.py are implemented on the 
-       training data which is formatted in POS tagging format which can be changed as and when required,hence is a 
-       general perceptron.
+NOTE : My implementation of perceplearn.py is based on the input and formatting of nblearn.
 
 
 Part 4 :
@@ -27,7 +24,7 @@ Part 4 :
 3) Accuracy of Part of speech tagging using Naive Bayes classifier : 89.99 %
    
    Named entity recognition using Naive Bayes classifier :
-   Overall Precision: 0.7407757805108799  Recall: 0.35991726039990807                  Overall F-score : ~ 0.500000
+   Overall Precision: 0.7407757805108799  Recall: 0.35991726039990807  Overall F-score : 0.500000
 
    The reason for the drop in accuracy of Part of speech tagger and F-score for Named entity recognition
    is because Naive Bayes assumes 'independence of words' property for a document of words. Since,part of
