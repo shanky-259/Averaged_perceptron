@@ -14,7 +14,7 @@ def classify(classlist):
         wordss=eachline.split()
         line='%%%BEGIN%%%'+' '
         for word in wordss:
-            line+=word.rsplit('/',1)[0]+' '
+            line+=word+' '
         line+='%%%END%%%'
         percepclassify(line,classlist,weightavg)
 

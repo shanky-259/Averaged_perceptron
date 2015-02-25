@@ -15,7 +15,7 @@ def classify(classlist):
         wordss=eachline.split()
         line='%%%BEGIN%%%'+' '
         for word in wordss:
-            line+=word.rsplit('/',1)[0]+' '
+            line+=word+' '
         line+='%%%END%%%'
         percepclassify(line,classlist,weightavg)
         
@@ -25,17 +25,17 @@ def percepclassify(line,classlist,weightavg):
     maximum='%%not_defined%%'
     for index in range(1,len(words)-1):
         try:
-            posp=words[index-1].rsplit('/',1)[1]
+            posp=words[index-1].split('/')[1]
         except:
             posp=''
-        posc=words[index].rsplit('/',1)[1]
+        posc=words[index].split('/')[1]
         try:
-            posn=words[index+1].rsplit('/',1)[1]
+            posn=words[index+1].split('/')[1]
         except:
             posn=''
-        wprev='w_prev'+words[index-1].rsplit('/',1)[0]
-        wcurr='w_curr'+words[index].rsplit('/',1)[0]
-        wnext='w_next'+words[index+1].rsplit('/',1)[0]
+        wprev='w_prev'+words[index-1].split('/')[0]
+        wcurr='w_curr'+words[index].split('/')[0]
+        wnext='w_next'+words[index+1].split('/')[0]
         prev_entity=maximum
         classifydev={}
         feature={}

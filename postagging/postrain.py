@@ -23,7 +23,7 @@ def updateweights(context,actualclass):
                 weight[actualclass][word]+=feature[word]
     
 def train(classlist_passed,lines):
-    N=50
+    N=10
     global weight,weightavg
     global classlist
     classlist=classlist_passed
