@@ -68,7 +68,6 @@ def build():
     lines=[]
     classes=set()
     allwordset=set()
-    d={}
     for line in open(files[1],'r',encoding='latin-1'):
         wordlist=line.split()
         sentence='%%%BEGIN%%%'+' '
