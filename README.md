@@ -1,3 +1,10 @@
+Instructions for running the code :
+	python3 perceplearn.py [trainingfile] [modelfile]
+	python3 percepclassify [modelfile] < [testfile] > [outputfile]
+
+
+Part 4 :
+
 1) Accuracy of POS tagger : 95 %
 
 2) 	B-ORG Precision: 0.8666158536585366  Recall: 0.6688235294117647 F-score: 0.					7549800796812749
